@@ -66,13 +66,11 @@ class _HomeSectionTimeState extends State<HomeSectionTimer> {
     final minutes = twoDigits(duration.inMinutes.remainder(60));
     final seconds = twoDigits(duration.inSeconds.remainder(60));
 
-    return RepaintBoundary(
-      child: Text(
-        '$hours:$minutes:$seconds',
-        style: const TextStyle(
-          fontSize: 36,
-          fontWeight: FontWeight.bold,
-        ),
+    return Text(
+      '$hours:$minutes:$seconds',
+      style: const TextStyle(
+        fontSize: 36,
+        fontWeight: FontWeight.bold,
       ),
     );
   }

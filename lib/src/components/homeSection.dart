@@ -66,7 +66,7 @@ class HomeSection extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 10),
-            const OtherTask(taskName: " planning"),
+            const OtherTask(taskName: "Planning"),
           ],
         ),
       ),
