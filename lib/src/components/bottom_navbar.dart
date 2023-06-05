@@ -1,6 +1,7 @@
-import 'package:apprentissage/src/themes/rodeeo_theme.dart';
+import 'package:apprentissage/src/themes/theme_provider.dart';
 import 'package:apprentissage/src/utils/extensions/build_context_ext.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 const kRadius = Radius.circular(25);
 
@@ -9,14 +10,22 @@ const kBorderRadius = BorderRadius.only(
   topRight: kRadius,
 );
 
-class BottomNavBar extends StatelessWidget {
+class BottomNavBar extends StatefulWidget {
   const BottomNavBar({
-    super.key,
+    Key? key,
     required this.selectedIndex,
     required this.onItemTapped,
-  });
+  }) : super(key: key);
+
   final int selectedIndex;
   final void Function(int) onItemTapped;
+
+  @override
+  State<BottomNavBar> createState() => _BottomNavBarState();
+}
+
+class _BottomNavBarState extends State<BottomNavBar> {
+  ValueNotifier<bool> isDarkModeNotifier = ValueNotifier<bool>(false);
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +33,21 @@ class BottomNavBar extends StatelessWidget {
       BottomNavbarAspect.calendar,
       BottomNavbarAspect.home,
       BottomNavbarAspect.download,
+      BottomNavbarAspect.parameter,
     ];
     return ClipRRect(
       borderRadius: kBorderRadius,
       child: SizedBox(
         height: 120,
         child: BottomNavigationBar(
-          backgroundColor: Colors.white,
-          selectedItemColor: Colors.black,
-          unselectedItemColor: context.colorScheme.background,
-          currentIndex: selectedIndex, // L'index de l'élément sélectionné
-          onTap: onItemTapped, // Callback appelé lors du clic sur un élément
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: context.colorScheme.onBackground,
+          selectedItemColor: context.colorScheme.onSurface,
+          unselectedItemColor: context.colorScheme.surface,
+          currentIndex: widget.selectedIndex,
+          onTap: (index) {
+            widget.onItemTapped(index);
+          },
           items: aspects.map((aspect) {
             return BottomNavigationBarItem(
               icon: Icon(aspect.icon),
@@ -50,16 +63,14 @@ class BottomNavBar extends StatelessWidget {
 enum BottomNavbarAspect {
   calendar(icon: Icons.calendar_today, title: 'Calendrier'),
   home(icon: Icons.home, title: 'Accueil'),
-  download(icon: Icons.file_download, title: 'Exporter');
+  download(icon: Icons.file_download, title: 'Exporter'),
+  parameter(icon: Icons.settings, title: 'Paramètres');
 
   final IconData icon;
   final String title;
+
   const BottomNavbarAspect({
     required this.title,
     required this.icon,
   });
-
-  void onPressed() {
-    print('pressed : $title');
-  }
 }

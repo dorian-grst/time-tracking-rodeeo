@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import '/src/utils/constants/additional_colors.dart';
 import '/src/utils/constants/chart_text_style.dart';
 import '/src/utils/constants/chart_colors.dart';
 import '/src/utils/extensions/string_extension.dart';
 
-class RodeoTheme {
+class RodeeoTheme {
   static dynamic get primaryColor => kChartePrimaire00.hexColor;
 
   static MaterialColor get primarySwatch {
@@ -23,107 +22,111 @@ class RodeoTheme {
     return MaterialColor(400, swatch);
   }
 
-  static ColorScheme get primaryColorScheme =>
-      ColorScheme.fromSwatch(primarySwatch: primarySwatch);
+  static ColorScheme get primaryColorScheme => ColorScheme.fromSwatch(primarySwatch: primarySwatch);
 
-  static ColorScheme get rodeeoColorScheme {
+  static ColorScheme get timeTrackerLightColorScheme {
     return primaryColorScheme.copyWith(
-      primary: kChartePrimaire00.hexColor,
-      onPrimary: kChartePrimaire04.hexColor,
-      secondary: kChartePrimaire01.hexColor,
-      onSecondary: kChartePrimaire04.hexColor,
-      tertiary: kChartePrimaire02.hexColor,
-      onTertiary: kChartePrimaire00.hexColor,
-      surface: kChartePrimaire04.hexColor,
-      onSurface: kCharteNeutre04.hexColor,
-      inverseSurface: kCharteNeutre09.hexColor, // White
-      background: kCharteNeutre08.hexColor, // border
-      onBackground: kCharteNeutre02.hexColor, // Muted
-      error: kRedWarningColor,
-      onError: kCharteNeutre08.hexColor,
-      errorContainer: kCharteTertiaire02.hexColor,
-      onErrorContainer: kDarkBlueColor,
+      primary: const Color.fromRGBO(47, 147, 92, 1),
+      onPrimary: const Color.fromRGBO(222, 255, 225, 1),
+      secondary: const Color.fromRGBO(245, 180, 0, 1),
+      onSecondary: const Color.fromRGBO(255, 122, 0, 1),
+      tertiary: const Color.fromRGBO(229, 91, 91, 1),
+      onTertiary: const Color.fromRGBO(107, 19, 0, 1),
+      surface: const Color.fromRGBO(229, 229, 229, 1), //darkWhite
+      onSurface: Colors.black,
+      inverseSurface: Colors.transparent,
+      background: const Color.fromRGBO(251, 250, 255, 1), //lightWhite
+      onBackground: Colors.white,
+      error: Colors.red,
+      onError: const Color.fromRGBO(255, 239, 241, 1),
+      errorContainer: Colors.grey,
+      onErrorContainer: const Color.fromARGB(255, 230, 230, 230),
       brightness: Brightness.light,
     );
   }
 
-  static ColorScheme extendedColorScheme(ColorScheme colorScheme) {
-    return colorScheme.copyWith(
-      primary: kChartePrimaire00.hexColor,
-      onPrimary: kChartePrimaire04.hexColor,
-      secondary: kChartePrimaire01.hexColor,
-      onSecondary: kChartePrimaire04.hexColor,
-      tertiary: kChartePrimaire02.hexColor,
-      onTertiary: kChartePrimaire00.hexColor,
-      surface: kChartePrimaire04.hexColor,
-      onSurface: kCharteNeutre04.hexColor,
-      inverseSurface: kCharteNeutre09.hexColor, // White
-      background: kCharteNeutre08.hexColor, // border
-      onBackground: kCharteNeutre02.hexColor, // Muted
-      error: kRedWarningColor,
-      onError: kCharteNeutre08.hexColor,
-      errorContainer: kCharteTertiaire02.hexColor,
-      onErrorContainer: kDarkBlueColor,
+  static ColorScheme get timeTrackerDarkColorScheme {
+    return primaryColorScheme.copyWith(
+      primary: const Color.fromRGBO(47, 147, 92, 1),
+      onPrimary: const Color.fromRGBO(222, 255, 225, 1),
+      secondary: const Color.fromRGBO(245, 180, 0, 1),
+      onSecondary: const Color.fromRGBO(255, 122, 0, 1),
+      tertiary: const Color.fromRGBO(229, 91, 91, 1),
+      onTertiary: const Color.fromRGBO(107, 19, 0, 1),
+      surface: const Color.fromARGB(231, 232, 232, 232), //darkBlack
+      onSurface: Colors.white,
+      inverseSurface: Colors.transparent,
+      background: const Color.fromRGBO(47, 49, 54, 1), //lightBlack
+      onBackground: const Color.fromRGBO(64, 68, 75, 1),
+      error: Colors.red,
+      onError: const Color.fromRGBO(255, 239, 241, 1),
+      errorContainer: Colors.grey,
+      onErrorContainer: Colors.white,
       brightness: Brightness.light,
     );
   }
 
-  static TextTheme extendedTextTheme(TextTheme textTheme) {
-    // as of now title => Primary Poppins
-    // as of now display => Secondary => Roboto
-    final primaryBold = primaryStyle.copyWith(fontWeight: FontWeight.w700);
-    final primaryMedium = primaryStyle.copyWith(fontWeight: FontWeight.w500);
-    final primaryLight = primaryStyle.copyWith(fontWeight: FontWeight.w300);
-    final secondaryBold = secondaryStyle.copyWith(fontWeight: FontWeight.w700);
-    final secondaryMedium =
-        secondaryStyle.copyWith(fontWeight: FontWeight.w500);
-    final secondaryLight = secondaryStyle.copyWith(fontWeight: FontWeight.w300);
+  static ThemeData lightTheme = ThemeData(
+    colorScheme: timeTrackerLightColorScheme,
+  );
+
+  static ThemeData darkTheme = ThemeData(
+    colorScheme: timeTrackerDarkColorScheme,
+  );
+
+  /*
+    Brightness? brightness,
+    Color? primary,
+    Color? onPrimary,
+    Color? primaryContainer,
+    Color? onPrimaryContainer,
+    Color? secondary,
+    Color? onSecondary,
+    Color? secondaryContainer,
+    Color? onSecondaryContainer,
+    Color? tertiary,
+    Color? onTertiary,
+    Color? tertiaryContainer,
+    Color? onTertiaryContainer,
+    Color? error,
+    Color? onError,
+    Color? errorContainer,
+    Color? onErrorContainer,
+    Color? background,
+    Color? onBackground,
+    Color? surface,
+    Color? onSurface,
+    Color? surfaceVariant,
+    Color? onSurfaceVariant,
+    Color? outline,
+    Color? outlineVariant,
+    Color? shadow,
+    Color? scrim,
+    Color? inverseSurface,
+    Color? onInverseSurface,
+    Color? inversePrimary,
+    Color? surfaceTint,
+  */
+
+  static TextTheme extendedTextTheme(TextTheme textTheme, ThemeData themeData) {
+    final colorScheme = themeData.colorScheme;
+    final title =
+        primaryStyle.copyWith(fontWeight: FontWeight.w900, fontSize: 24, color: Colors.red);
+    final subtitle = primaryStyle.copyWith(
+        fontWeight: FontWeight.w900, fontSize: 20, color: colorScheme.onBackground);
+    final timer = primaryStyle.copyWith(
+        fontWeight: FontWeight.w900, fontSize: 36, color: colorScheme.onBackground);
+    final input = secondaryStyle.copyWith(fontSize: 18, color: colorScheme.surface);
+
     return textTheme.copyWith(
-      displayLarge: primaryBold,
-      displayMedium: primaryMedium,
-      displaySmall: primaryLight,
-      titleLarge: secondaryBold,
-      titleMedium: secondaryMedium,
-      titleSmall: secondaryLight,
-    );
-  }
-
-  static ButtonStyle rodeeoButtonStyle(ThemeData data) {
-    final textTheme = extendedTextTheme(data.textTheme);
-    return ButtonStyle(
-      alignment: Alignment.center,
-      padding: const MaterialStatePropertyAll<EdgeInsetsGeometry>(
-          EdgeInsets.only(bottom: 8.0)),
-      backgroundColor: MaterialStateProperty.resolveWith((states) {
-        return states.contains(MaterialState.selected)
-            ? rodeeoColorScheme.secondary
-            : rodeeoColorScheme.surface;
-      }),
-      foregroundColor: MaterialStateProperty.resolveWith((states) {
-        return states.contains(MaterialState.selected)
-            ? rodeeoColorScheme.onBackground
-            : rodeeoColorScheme.onSurface;
-      }),
-      textStyle: MaterialStateProperty.all(
-        textTheme.displayMedium?.copyWith(fontSize: 17),
-      ),
-      side: MaterialStateProperty.all<BorderSide>(
-        BorderSide(
-          color: rodeeoColorScheme.onSurface, //color
-          width: 0.5,
-        ),
-      ),
-      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-        RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0), // radius you want
-        ),
-      ),
+      titleLarge: title,
+      titleMedium: subtitle,
+      displayLarge: timer,
+      labelLarge: input,
     );
   }
 
   /*
-​
-TextTheme copyWith({
   TextStyle? displayLarge,
   TextStyle? displayMedium,
   TextStyle? displaySmall,
@@ -139,29 +142,7 @@ TextTheme copyWith({
   TextStyle? labelLarge,
   TextStyle? labelMedium,
   TextStyle? labelSmall,
-  TextStyle? headline1,
-  TextStyle? headline2,
-  TextStyle? headline3,
-  TextStyle? headline4,
-  TextStyle? headline5,
-  TextStyle? headline6,
-  TextStyle? subtitle1,
-  TextStyle? subtitle2,
-  TextStyle? bodyText1,
-  TextStyle? bodyText2,
-  TextStyle? caption,
-  TextStyle? button,
   TextStyle? overline,
 })
-​
-    */
-
-  static ThemeData extendedTheme(ThemeData data) {
-    return data.copyWith(
-      colorScheme: rodeeoColorScheme,
-      textTheme: extendedTextTheme(data.textTheme),
-      segmentedButtonTheme:
-          SegmentedButtonThemeData(style: rodeeoButtonStyle(data)),
-    );
-  }
+*/
 }

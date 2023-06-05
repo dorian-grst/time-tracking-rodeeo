@@ -1,15 +1,17 @@
+import 'package:apprentissage/src/share/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-class HomeSectionTimer extends StatefulWidget {
-  const HomeSectionTimer({super.key, required this.isPlaying});
+class CurrentTaskTimer extends StatefulWidget {
+  const CurrentTaskTimer({super.key, required this.isPlaying, required this.durationSecond});
   final bool isPlaying;
+  final int durationSecond;
 
   @override
-  State<HomeSectionTimer> createState() => _HomeSectionTimeState();
+  State<CurrentTaskTimer> createState() => _CurrentTaskTimerState();
 }
 
-class _HomeSectionTimeState extends State<HomeSectionTimer> {
+class _CurrentTaskTimerState extends State<CurrentTaskTimer> {
   final Duration uneSeconde = const Duration(seconds: 1);
   Timer? timer;
   int counter = 0;
@@ -19,20 +21,9 @@ class _HomeSectionTimeState extends State<HomeSectionTimer> {
   @override
   void initState() {
     super.initState();
+    duration = Duration(seconds: widget.durationSecond);
     if (widget.isPlaying) {
       startTimer();
-    }
-  }
-
-  @override
-  void didUpdateWidget(HomeSectionTimer oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.isPlaying != oldWidget.isPlaying) {
-      if (widget.isPlaying) {
-        startTimer();
-      } else {
-        stopTimer();
-      }
     }
   }
 
@@ -47,7 +38,7 @@ class _HomeSectionTimeState extends State<HomeSectionTimer> {
       return;
     }
     setState(() {
-      duration = duration + uneSeconde;
+      duration += uneSeconde;
     });
   }
 
@@ -68,9 +59,10 @@ class _HomeSectionTimeState extends State<HomeSectionTimer> {
 
     return Text(
       '$hours:$minutes:$seconds',
-      style: const TextStyle(
-        fontSize: 36,
-        fontWeight: FontWeight.bold,
+      style: AppTextStyle.timer.merge(
+        const TextStyle(
+          height: 1,
+        ),
       ),
     );
   }

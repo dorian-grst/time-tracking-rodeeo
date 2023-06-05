@@ -8,4 +8,5 @@ extension BuildContextExtension on BuildContext {
   TextStyle? get displayRobotoStyle => Theme.of(this).textTheme.displayMedium;
   TextStyle? get titlePopinsStyle => Theme.of(this).textTheme.titleMedium;
   ColorScheme get colorScheme => Theme.of(this).colorScheme;
+  TextTheme get textTheme => Theme.of(this).textTheme;
 }
