@@ -1,5 +1,4 @@
 import 'package:apprentissage/src/extensions/context_extension.dart';
-import 'package:apprentissage/src/share/app_text_style.dart';
 import 'package:apprentissage/src/themes/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +11,6 @@ class ParameterSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-
     return Padding(
       padding: const EdgeInsets.only(top: 75, left: 15, right: 15),
       child: Column(
@@ -40,7 +38,7 @@ class ParameterSection extends StatelessWidget {
                   ),
                   Text('Changez de thème',
                       style: TextStyle(color: context.colorScheme.onSurface)
-                          .merge(AppTextStyle.title)),
+                          .merge(context.textTheme.titleLarge)),
                   Padding(
                     padding: const EdgeInsets.only(top: 25, bottom: 50),
                     child: SizedBox(
@@ -57,6 +55,7 @@ class ParameterSection extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       themeProvider.toggleTheme();
+                      
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(context.colorScheme.onSurface),
@@ -66,7 +65,7 @@ class ParameterSection extends StatelessWidget {
                         ),
                       ),
                       minimumSize: MaterialStateProperty.all(
-                          Size(200, 50)), // Modifier la largeur et la hauteur du bouton ici
+                          const Size(200, 50)), // Modifier la largeur et la hauteur du bouton ici
                     ),
                     child: Text(
                       themeProvider.isDarkMode ? 'Light Theme' : 'Dark Theme',

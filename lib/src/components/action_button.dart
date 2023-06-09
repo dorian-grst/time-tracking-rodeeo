@@ -1,4 +1,4 @@
-import 'package:apprentissage/src/share/app_text_style.dart';
+import 'package:apprentissage/src/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 
 class ActionButton extends StatelessWidget {
@@ -23,7 +23,7 @@ class ActionButton extends StatelessWidget {
           child: Text(
             text,
             style:
-                AppTextStyle.subtitle.merge(TextStyle(color: textColor)),
+                TextStyle(color: textColor).merge(context.textTheme.titleMedium),
             textAlign: TextAlign.center,
           ),
         ),

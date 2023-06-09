@@ -23,4 +23,11 @@ class Tag extends HiveObject {
   Tag.label({
     required this.nameTag,
   }) : type = TagType.label;
+
+  Map<String, dynamic> toMap () {
+    return {
+      'nameTag': nameTag,
+      'type': type.toString(),
+    };
+  }
 }

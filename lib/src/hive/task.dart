@@ -1,3 +1,5 @@
+import 'package:apprentissage/src/components/current_task_timer.dart';
+import 'package:apprentissage/src/hive/boxes.dart';
 import 'package:apprentissage/src/hive/tag.dart';
 import 'package:apprentissage/src/hive/task_state.dart';
 import 'package:hive/hive.dart';
@@ -5,7 +7,7 @@ import 'package:hive/hive.dart';
 part 'task.g.dart';
 
 @HiveType(typeId: 1)
-class Task extends HiveObject {
+class Task extends HiveObject implements TimableObject {
   @HiveField(0)
   final String name;
 
@@ -78,10 +80,6 @@ class Task extends HiveObject {
 
   Duration get duration => Duration(seconds: durationSecond);
 
-  Task start(bool value) {
-    return copyWith(state: value ? TaskState.inProgress : TaskState.pause);
-  }
-
   Task copyWith({
     String? name,
     String? timePrevision,
@@ -114,29 +112,100 @@ class Task extends HiveObject {
     );
   }
 
-  void startTask() {
+  Future<void> saveWith({
+    String? name,
+    String? timePrevision,
+    String? timeSpent,
+    String? startDate,
+    String? endDate,
+    String? doneSubtasks,
+    String? globalAdvancement,
+    String? description,
+    List<Tag>? participants,
+    List<Tag>? tags,
+    TaskState? state,
+    int? durationSecond,
+    int? activityStartedAt,
+  }) async {
+    final newTask = copyWith(
+      name: name,
+      timePrevision: timePrevision,
+      timeSpent: timeSpent,
+      startDate: startDate,
+      endDate: endDate,
+      doneSubtasks: doneSubtasks,
+      globalAdvancement: globalAdvancement,
+      description: description,
+      participants: participants,
+      tags: tags,
+      state: state,
+      durationSecond: durationSecond,
+      activityStartedAt: activityStartedAt,
+    );
+    if (key == null) {
+      taskBox.add(newTask);
+    } else {
+      taskBox.put(key, newTask);
+    }
+    await newTask.save();
+  }
+
+  Future<void> start() async {
     if (isStarted) {
       return;
     }
-    final task = copyWith(
+
+    await saveWith(
       activityStartedAt: nowSinceEpoch,
     );
-    task.save();
   }
 
-  void stopTask() {
+  Future<void> stop() async {
     if (isStarted == false) {
       return;
     }
     final duration = durationSecond + (nowSinceEpoch - activityStartedAt);
-    final task = copyWith(
+    await saveWith(
       durationSecond: duration,
       activityStartedAt: 0,
     );
-    task.save();
   }
 
   bool get isStarted => activityStartedAt != 0;
   int get nowSinceEpoch => DateTime.now().millisecondsSinceEpoch ~/ 1000;
-  Duration get durationSinceStart => Duration(seconds: durationSecond);
+
+  /// Temps total passé sur la tâche au moment où on l'a arrêté
+  Duration get totalTaskDuration => Duration(seconds: durationSecond);
+
+  /// Temps passé sur la tâche depuis le début de la session
+  Duration get sessionDuration =>
+      activityStartedAt == 0 ? Duration.zero : Duration(seconds: nowSinceEpoch - activityStartedAt);
+
+  /// Temps passé sur la tâche
+  @override
+  Duration get currentDuration => totalTaskDuration + sessionDuration;
+
+  @override
+  bool get isPlaying => isStarted;
+
+  @override
+  void Function(bool newStatus) get setIsPlaying => (status) => status ? start : stop;
+
+  Map<String, dynamic> toMap () {
+    return {
+      'name': name,
+      'timePrevision': timePrevision,
+      'timeSpent': timeSpent,
+      'startDate': startDate,
+      'endDate': endDate,
+      'doneSubtasks': doneSubtasks,
+      'globalAdvancement': globalAdvancement,
+      'description': description,
+      'state': state.toString(), // Convertir TaskState en chaîne de caractères
+      'participants': participants.map((participant) => participant.toMap ()).toList(),
+      'tags': tags.map((tag) => tag.toMap ()).toList(),
+      'durationSecond': durationSecond,
+      'activityStartedAt': activityStartedAt,
+    };
+  }
 }

@@ -42,7 +42,6 @@ class _TimeGraphState extends State<TimeGraph> {
         ),
       ),
     );
-    ;
   }
 }
 

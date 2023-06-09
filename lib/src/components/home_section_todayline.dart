@@ -1,6 +1,5 @@
 import 'package:apprentissage/src/components/task_list_view.dart';
 import 'package:apprentissage/src/extensions/context_extension.dart';
-import 'package:apprentissage/src/share/app_text_style.dart';
 import 'package:flutter/material.dart';
 
 const hSizedBox20 = SizedBox(height: 20);
@@ -37,9 +36,9 @@ class HomeSectionTodayline extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Toutes les tâches 🍃',
-                      style: AppTextStyle.title,
+                      style: context.textTheme.titleLarge,
                     ),
                     hSizedBox20,
                     Row(
@@ -73,9 +72,9 @@ class HomeSectionTodayline extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Text(
+        Text(
           'Aujourd\'hui',
-          style: AppTextStyle.subtitle,
+          style: context.textTheme.titleMedium,
         ),
         TextButton(
           style: ButtonStyle(

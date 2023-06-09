@@ -1,9 +1,6 @@
 import 'package:apprentissage/src/components/current_task_container.dart';
-import 'package:apprentissage/src/components/current_task_timer.dart';
 import 'package:apprentissage/src/extensions/context_extension.dart';
 import 'package:apprentissage/src/hive/boxes.dart';
-import 'package:apprentissage/src/hive/task.dart';
-
 import 'package:flutter/material.dart';
 
 const hSizedBox10 = SizedBox(height: 10);
@@ -11,15 +8,14 @@ const wSizedBox10 = SizedBox(width: 10);
 const hSizedBox15 = SizedBox(height: 15);
 
 class CurrentTaskView extends StatelessWidget {
-  const CurrentTaskView({super.key, required this.task});
-  final Task? task;
+  const CurrentTaskView({super.key, required this.currentTaskIndex});
+  final dynamic currentTaskIndex;
 
   @override
   Widget build(BuildContext context) {
-    final actualTask = task;
-
+    late final currentTask = currentTaskIndex != null ? taskBox.get(currentTaskIndex) : null;
     return Visibility(
-      visible: actualTask != null,
+      visible: currentTaskIndex != null,
       child: SizedBox(
           height: 115,
           width: double.infinity,
@@ -36,9 +32,9 @@ class CurrentTaskView extends StatelessWidget {
                 top: 15,
                 bottom: 15,
               ),
-              child: actualTask != null
+              child: currentTask != null
                   ? CurrentTaskContainer(
-                      actualTask: actualTask,
+                      currentTaskIndex: currentTaskIndex,
                     )
                   : const SizedBox(),
             ),

@@ -1,21 +1,24 @@
 import 'package:apprentissage/src/components/current_task.dart';
 import 'package:apprentissage/src/components/current_task_timer.dart';
-import 'package:apprentissage/src/hive/task.dart';
+import 'package:apprentissage/src/hive/boxes.dart';
 import 'package:apprentissage/src/utils/extensions/build_context_ext.dart';
 import 'package:flutter/material.dart';
 
 class CurrentTaskLeftside extends StatelessWidget {
   const CurrentTaskLeftside({
     super.key,
-    required this.task,
+    required this.taskIndex,
     required this.isPlayingNotifier,
   });
 
-  final Task? task;
+  final dynamic taskIndex;
   final ValueNotifier<bool> isPlayingNotifier;
 
   @override
   Widget build(BuildContext context) {
+    if (taskIndex == null) return const SizedBox();
+    if (taskBox.containsKey(taskIndex) == false) return const SizedBox();
+    final task = taskBox.get(taskIndex);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -23,14 +26,9 @@ class CurrentTaskLeftside extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ValueListenableBuilder(
-                valueListenable: isPlayingNotifier,
-                builder: (context, isPlaying, child) {
-                  return CurrentTaskTimer(
-                    isPlaying: isPlaying,
-                    durationSecond: task!.durationSecond,
-                  );
-                }),
+            CurrentTaskTimer(
+              timableObject: task,
+            ),
             hSizedBox15,
             Row(
               children: [
@@ -50,8 +48,8 @@ class CurrentTaskLeftside extends StatelessWidget {
                 ),
                 wSizedBox10,
                 Text(
-                  task!.name,
-                  style: const TextStyle(fontSize: 16),
+                  taskBox.get(taskIndex)?.name,
+                  style: context.textTheme.bodySmall,
                 ),
               ],
             ),

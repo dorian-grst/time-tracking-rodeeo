@@ -1,47 +1,41 @@
 import 'package:apprentissage/src/components/current_task_button.dart';
 import 'package:apprentissage/src/components/state_info_panel.dart';
-import 'package:apprentissage/src/hive/task_state.dart';
+import 'package:apprentissage/src/hive/boxes.dart';
 import 'package:flutter/material.dart';
 
 class CurrentTaskRightside extends StatelessWidget {
   const CurrentTaskRightside({
     super.key,
-    required this.taskStateNotifier,
-    required this.isPlayingNotifier,
+    required this.taskIndex,
   });
-  final ValueNotifier<TaskState> taskStateNotifier;
-  final ValueNotifier<bool> isPlayingNotifier;
+  final dynamic taskIndex;
 
   @override
   Widget build(BuildContext context) {
-
+    final task = taskBox.get(taskIndex);
     void togglePlaying() {
-      isPlayingNotifier.value = !isPlayingNotifier.value;
+      if (!(task?.isPlaying ?? false)) {
+        task?.start();
+      } else {
+        task?.stop();
+      }
     }
 
+    if (task == null) return const SizedBox();
     return SizedBox(
-      child: ValueListenableBuilder(
-          valueListenable: taskStateNotifier,
-          builder: (context, taskState, child) {
-            return ValueListenableBuilder(
-              valueListenable: isPlayingNotifier,
-              builder: (context, isPlaying, child) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    StateInfoPanel(
-                      taskState: taskState,
-                    ),
-                    CurrentTaskButton(
-                      isPlaying: isPlaying,
-                      onTap: togglePlaying,
-                    )
-                  ],
-                );
-              }
-            );
-          }),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          StateInfoPanel(
+            taskState: task.state,
+          ),
+          CurrentTaskButton(
+            isPlaying: task.isPlaying,
+            onTap: togglePlaying,
+          )
+        ],
+      ),
     );
   }
 }

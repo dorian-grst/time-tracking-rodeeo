@@ -1,7 +1,5 @@
-import 'package:apprentissage/src/themes/theme_provider.dart';
 import 'package:apprentissage/src/utils/extensions/build_context_ext.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 const kRadius = Radius.circular(25);
 

@@ -55,6 +55,7 @@ class _TimeTrackerHomePageState extends State<TimeTrackerHomePage> {
     final homeSection = HomeSection(
       onSelectTask: () {},
     );
+    
     return Scaffold(
       backgroundColor: context.colorScheme.background,
       body: ValueListenableBuilder<int>(
@@ -78,7 +79,7 @@ class _TimeTrackerHomePageState extends State<TimeTrackerHomePage> {
           builder: (context, selectedIndex, child) {
             return BottomNavBar(
               selectedIndex: selectedIndex,
-              onItemTapped: (index) => tabIndexNotifier.value = index,
+              onItemTapped: (index) { tabIndexNotifier.value = index; },
             );
           }),
       floatingActionButton: CreateTaskFloatingButton(

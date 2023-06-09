@@ -1,4 +1,3 @@
-import 'package:apprentissage/src/share/app_text_style.dart';
 import 'package:apprentissage/src/utils/extensions/build_context_ext.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +30,7 @@ class EditTaskForm extends StatelessWidget {
         hSizedBox20,
         Text(
           label,
-          style: AppTextStyle.subtitle,
+          style: context.textTheme.titleMedium,
         ),
         hSizedBox15,
         TextFormField(
@@ -42,7 +41,7 @@ class EditTaskForm extends StatelessWidget {
           controller: controller,
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: AppTextStyle.input,
+            hintStyle: context.textTheme.labelLarge,
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,
               vertical: 16,

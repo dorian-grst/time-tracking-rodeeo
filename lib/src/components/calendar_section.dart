@@ -1,4 +1,4 @@
-import 'package:apprentissage/src/share/app_text_style.dart';
+import 'package:apprentissage/src/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 
 class CalendarSection extends StatelessWidget {
@@ -10,10 +10,10 @@ class CalendarSection extends StatelessWidget {
       padding: const EdgeInsets.only(top: 75, left: 15, right: 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
+        children: [
           Text(
             'Calendrier 🍃',
-            style: AppTextStyle.title,
+            style: context.textTheme.titleLarge,
           )
         ],
       ),

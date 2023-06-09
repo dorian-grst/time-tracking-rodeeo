@@ -6,7 +6,6 @@ import 'package:apprentissage/src/extensions/validator_extensions.dart';
 import 'package:apprentissage/src/hive/boxes.dart';
 import 'package:apprentissage/src/hive/tag.dart';
 import 'package:apprentissage/src/hive/task_state.dart';
-import 'package:apprentissage/src/share/app_text_style.dart';
 import 'package:apprentissage/src/utils/extensions/build_context_ext.dart';
 import 'package:apprentissage/src/hive/task.dart';
 import 'package:flutter/material.dart';
@@ -219,48 +218,35 @@ class _EditTaskViewState extends State<EditTaskView> {
     if (areFieldsFilled && isTimeValid && isStartDateValid && isDateLogical) {
       setState(
         () {
+          final newTask = Task(
+            name: taskNameController.text,
+            timePrevision: taskTimeController.text,
+            timeSpent: '0h',
+            startDate: taskStartDateController.text,
+            endDate: taskEndDateController.text,
+            doneSubtasks: '0',
+            globalAdvancement: '0%',
+            description: taskDescriptionController.text,
+            participants: personList,
+            tags: tagList,
+            state: TaskState.notStarted,
+            durationSecond: 0,
+            activityStartedAt: 0,
+          );
           if (widget.createMode) {
             taskBox.add(
-              Task(
-                name: taskNameController.text,
-                timePrevision: taskTimeController.text,
-                timeSpent: '0h',
-                startDate: taskStartDateController.text,
-                endDate: taskEndDateController.text,
-                doneSubtasks: '0',
-                globalAdvancement: '0%',
-                description: taskDescriptionController.text,
-                participants: personList,
-                tags: tagList,
-                state: TaskState.notStarted,
-                durationSecond: 0,
-                activityStartedAt: 0,
-              ),
+              newTask,
             );
           } else {
             taskBox.put(
               widget.task.key,
-              Task(
-                name: taskNameController.text,
-                timePrevision: taskTimeController.text,
-                timeSpent: widget.task.timeSpent,
-                startDate: taskStartDateController.text,
-                endDate: taskEndDateController.text,
-                doneSubtasks: widget.task.doneSubtasks,
-                globalAdvancement: widget.task.globalAdvancement,
-                description: taskDescriptionController.text,
-                participants: personList,
-                tags: tagList,
-                state: widget.task.state,
-                durationSecond: widget.task.durationSecond,
-                activityStartedAt: widget.task.activityStartedAt,
-              ),
+              newTask,
             );
           }
         },
       );
       Navigator.of(context).pop();
-      print(personList);
+      debugPrint(personList.toString());
     }
   }
 
@@ -276,7 +262,7 @@ class _EditTaskViewState extends State<EditTaskView> {
       children: [
         Text(
           widget.createMode ? 'Nouvelle tâche 🍃' : 'Modifier la tâche 🍃',
-          style: AppTextStyle.title,
+          style: context.textTheme.titleLarge,
         ),
         EditTaskForm(
           keyboardType: TextInputType.text,

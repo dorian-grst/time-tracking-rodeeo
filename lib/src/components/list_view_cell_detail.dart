@@ -268,7 +268,7 @@ class ListViewCellDetail extends StatelessWidget {
                         TextButton(
                           onPressed: () {
                             deleteTask();
-                            print(taskBox);
+                            debugPrint(taskBox.toString());
                             Navigator.pop(context);
                           },
                           child: Text('Supprimer',

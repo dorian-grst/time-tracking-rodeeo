@@ -110,19 +110,18 @@ class RodeeoTheme {
 
   static TextTheme extendedTextTheme(TextTheme textTheme, ThemeData themeData) {
     final colorScheme = themeData.colorScheme;
-    final title =
-        primaryStyle.copyWith(fontWeight: FontWeight.w900, fontSize: 24, color: Colors.red);
-    final subtitle = primaryStyle.copyWith(
-        fontWeight: FontWeight.w900, fontSize: 20, color: colorScheme.onBackground);
-    final timer = primaryStyle.copyWith(
-        fontWeight: FontWeight.w900, fontSize: 36, color: colorScheme.onBackground);
-    final input = secondaryStyle.copyWith(fontSize: 18, color: colorScheme.surface);
+    final title = primaryStyle.copyWith(fontSize: 60, color: colorScheme.onSurface);
+    final subtitle = primaryStyle.copyWith(fontSize: 20, color: colorScheme.onSurface);
+    final timer = primaryStyle.copyWith(fontSize: 36, color: colorScheme.onSurface);
+    final input = primaryStyle.copyWith(fontSize: 18, color: colorScheme.surface);
+    final small = secondaryStyle.copyWith(fontSize: 16, color: colorScheme.onSurface);
 
     return textTheme.copyWith(
       titleLarge: title,
       titleMedium: subtitle,
       displayLarge: timer,
       labelLarge: input,
+      bodySmall: small,
     );
   }
 

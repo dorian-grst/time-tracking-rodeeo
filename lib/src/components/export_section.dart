@@ -1,6 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:apprentissage/src/extensions/context_extension.dart';
-import 'package:apprentissage/src/share/app_text_style.dart';
+import 'package:apprentissage/src/hive/boxes.dart';
+import 'package:apprentissage/src/hive/task.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const hSizedBox20 = SizedBox(height: 20);
 
@@ -8,23 +13,59 @@ class ExportSection extends StatefulWidget {
   const ExportSection({Key? key}) : super(key: key);
 
   @override
-  _ExportSectionState createState() => _ExportSectionState();
+  State<ExportSection> createState() => _ExportSectionState();
 }
 
 class _ExportSectionState extends State<ExportSection> {
   bool _isExporting = false;
 
-  void _startExport() {
+  Future<void> startExport() async {
     setState(() {
       _isExporting = true;
     });
 
-    // Attendre 2 secondes puis réinitialiser l'état de l'export
-    Future.delayed(const Duration(seconds: 2), () {
-      setState(() {
-        _isExporting = false;
+    List<Map<String, dynamic>> taskJsonList = [];
+    for (var i = 0; i < taskBox.length; i++) {
+      Task task = taskBox.getAt(i) as Task;
+      taskJsonList.add(task.toMap());
+    }
+    String jsonStr = jsonEncode(taskJsonList);
+    File('tasks.json')
+        .writeAsString(jsonStr)
+        .then((_) => debugPrint('Fichier JSON créé avec succès.'))
+        .catchError((error) => debugPrint('Erreur lors de la création du fichier JSON : $error'));
+
+    String? encodeQueryParameters(Map<String, String> params) {
+      return params.entries
+          .map((MapEntry<String, String> e) =>
+              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+          .join('&');
+    }
+
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('dd/MM/yyyy').format(now);
+
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: 'dorian.grasset.contact@gmail.com',
+      query: encodeQueryParameters(<String, String>{
+        'subject': 'Export de mes tâches',
+        'body': 'Voici le fichier JSON contenant mes tâches à la date du $formattedDate.',
+        'attachments': 'tasks.json',
+      }),
+    );
+
+    if (await canLaunchUrl(emailUri)) {
+      await launchUrl(emailUri);
+      // Attendre 2 secondes puis réinitialiser l'état de l'export
+      Future.delayed(const Duration(seconds: 2), () {
+        setState(() {
+          _isExporting = false;
+        });
       });
-    });
+    } else {
+      throw Exception('Could not launch $emailUri');
+    }
   }
 
   @override
@@ -34,9 +75,9 @@ class _ExportSectionState extends State<ExportSection> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Exporter 🍃',
-            style: AppTextStyle.title,
+            style: context.textTheme.titleLarge,
           ),
           const SizedBox(height: 20),
           Padding(
@@ -56,8 +97,8 @@ class _ExportSectionState extends State<ExportSection> {
                   ),
                   Text(
                     'Exporter les données',
-                    style:
-                        TextStyle(color: context.colorScheme.onSurface).merge(AppTextStyle.title),
+                    style: TextStyle(color: context.colorScheme.onSurface)
+                        .merge(context.textTheme.titleLarge),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 25, bottom: 50),
@@ -75,7 +116,7 @@ class _ExportSectionState extends State<ExportSection> {
                   ElevatedButton(
                     onPressed: () {
                       if (!_isExporting) {
-                        _startExport();
+                        startExport();
                       }
                     },
                     style: ButtonStyle(
@@ -86,7 +127,7 @@ class _ExportSectionState extends State<ExportSection> {
                         ),
                       ),
                       minimumSize: MaterialStateProperty.all(
-                          Size(200, 50)), // Modifier la largeur et la hauteur du bouton ici
+                          const Size(200, 50)), // Modifier la largeur et la hauteur du bouton ici
                     ),
                     child: Text(
                       _isExporting ? 'Exporté !' : 'Exporter',

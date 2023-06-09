@@ -1,8 +1,8 @@
 import 'package:apprentissage/src/components/current_task.dart';
 import 'package:apprentissage/src/components/task_list_view.dart';
 import 'package:apprentissage/src/components/home_section_todayline.dart';
+import 'package:apprentissage/src/extensions/context_extension.dart';
 import 'package:apprentissage/src/hive/task.dart';
-import 'package:apprentissage/src/share/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -19,9 +19,14 @@ class HomeSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentTaskObserver = ValueNotifier<Task?>(null);
+    //final currentTaskObserver = ValueNotifier<Task?>(null);
+    final currentTaskIndexObserver = ValueNotifier<dynamic>(null);
     final Box<Task> taskBox =
         Hive.box<Task>('taskBox'); // Remplacez 'tasks' par le nom de votre boîte de tâches
+
+    Task? currentTask(dynamic currentIndex) {
+      return currentIndex != null ? taskBox.get(currentIndex) : null;
+    }
 
     return Padding(
       padding: const EdgeInsets.only(top: 75, left: 15, right: 15),
@@ -29,23 +34,23 @@ class HomeSection extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Tâche en cours 🍃',
-            style: AppTextStyle.title,
+            style: context.textTheme.titleLarge,
           ),
           hSizedBox20,
           ValueListenableBuilder(
-            valueListenable: currentTaskObserver,
-            builder: (context, currentTask, child) {
+            valueListenable: currentTaskIndexObserver,
+            builder: (context, currentIndex, child) {
               return CurrentTaskView(
-                task: currentTask,
+                currentTaskIndex: currentIndex,
               );
             },
           ),
           hSizedBox25,
           HomeSectionTodayline(
             taskListView: TaskListView(
-              currentTaskObserver: currentTaskObserver,
+              currentTaskIndexObserver: currentTaskIndexObserver,
             ),
           ),
           hSizedBox10,
@@ -62,7 +67,7 @@ class HomeSection extends StatelessWidget {
             valueListenable: taskBox.listenable(),
             builder: (context, box, _) {
               return TaskListView(
-                currentTaskObserver: currentTaskObserver,
+                currentTaskIndexObserver: currentTaskIndexObserver,
               );
             },
           )),

@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 const primaryStyle = TextStyle(
   fontFamily: 'RodeeoPrimary',
   package: 'rodeeo_app_ui',
-  fontWeight: FontWeight.w400,
-  fontSize: 22.0,
+  fontWeight: FontWeight.w900,
 );
 
 const secondaryStyle = TextStyle(
-  fontFamily: 'RodeeoSecondary',
+  fontFamily: 'RodeeoPrimary',
   package: 'rodeeo_app_ui',
   fontWeight: FontWeight.w400,
 );

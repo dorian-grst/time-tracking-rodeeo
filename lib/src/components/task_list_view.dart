@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 class TaskListView extends StatefulWidget {
   const TaskListView({
     Key? key,
-    required this.currentTaskObserver,
+    required this.currentTaskIndexObserver,
   }) : super(key: key);
 
-  final ValueNotifier<Task?> currentTaskObserver;
+  final ValueNotifier<dynamic> currentTaskIndexObserver;
 
   @override
   State<TaskListView> createState() => _TaskListViewState();
@@ -34,6 +34,8 @@ class _TaskListViewState extends State<TaskListView> {
   @override
   Widget build(BuildContext context) {
     final reversedTaskList = taskBox.values.toList().reversed.toList();
+    final currentTaskIndex = widget.currentTaskIndexObserver.value;
+    final currentTask = currentTaskIndex != null ? taskBox.get(currentTaskIndex) : null;
     return ListView.builder(
       padding: EdgeInsets.zero,
       itemCount: taskBox.length,
@@ -42,13 +44,13 @@ class _TaskListViewState extends State<TaskListView> {
         return ListViewCell(
           task: task,
           onDeleteTask: () {
-            if (task == widget.currentTaskObserver.value) {
-              widget.currentTaskObserver.value = null;
+            if (task == currentTask) {
+              widget.currentTaskIndexObserver.value = null;
             }
             onDeleteTask(task);
           },
           onEditTask: (newTask) => onTaskEdited(task, newTask),
-          onSelectTask: () => widget.currentTaskObserver.value = task,
+          onSelectTask: () => widget.currentTaskIndexObserver.value = task.key,
         );
       },
     );

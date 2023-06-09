@@ -1,11 +1,16 @@
-import 'package:apprentissage/src/share/app_text_style.dart';
+import 'package:apprentissage/src/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+abstract class TimableObject {
+  Duration get currentDuration;
+  bool get isPlaying;
+  void Function(bool) get setIsPlaying;
+}
+
 class CurrentTaskTimer extends StatefulWidget {
-  const CurrentTaskTimer({super.key, required this.isPlaying, required this.durationSecond});
-  final bool isPlaying;
-  final int durationSecond;
+  const CurrentTaskTimer({super.key, required this.timableObject});
+  final TimableObject timableObject;
 
   @override
   State<CurrentTaskTimer> createState() => _CurrentTaskTimerState();
@@ -13,41 +18,26 @@ class CurrentTaskTimer extends StatefulWidget {
 
 class _CurrentTaskTimerState extends State<CurrentTaskTimer> {
   final Duration uneSeconde = const Duration(seconds: 1);
-  Timer? timer;
-  int counter = 0;
-  Duration duration = Duration.zero;
+  late final Timer timer;
   bool isPlaying = false;
+  Duration get duration => widget.timableObject.currentDuration;
 
   @override
   void initState() {
     super.initState();
-    duration = Duration(seconds: widget.durationSecond);
-    if (widget.isPlaying) {
-      startTimer();
-    }
+    timer = Timer.periodic(uneSeconde, (timer) {
+      refreshTimer();
+    });
   }
 
   @override
   void dispose() {
+    timer.cancel();
     super.dispose();
-    stopTimer();
   }
 
-  void addTime() {
-    if (!mounted || !widget.isPlaying) {
-      return;
-    }
-    setState(() {
-      duration += uneSeconde;
-    });
-  }
-
-  void startTimer() {
-    timer = Timer.periodic(uneSeconde, (_) => addTime());
-  }
-
-  void stopTimer() {
-    timer?.cancel();
+  void refreshTimer() {
+    setState(() {});
   }
 
   @override
@@ -56,14 +46,9 @@ class _CurrentTaskTimerState extends State<CurrentTaskTimer> {
     final hours = twoDigits(duration.inHours);
     final minutes = twoDigits(duration.inMinutes.remainder(60));
     final seconds = twoDigits(duration.inSeconds.remainder(60));
-
     return Text(
       '$hours:$minutes:$seconds',
-      style: AppTextStyle.timer.merge(
-        const TextStyle(
-          height: 1,
-        ),
-      ),
+      style: context.textTheme.displayLarge,
     );
   }
 }
