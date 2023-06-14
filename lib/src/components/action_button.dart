@@ -2,7 +2,12 @@ import 'package:apprentissage/src/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 
 class ActionButton extends StatelessWidget {
-  const ActionButton({super.key, required this.textColor, required this.backgroundColor, required this.text, required this.onPressed});
+  const ActionButton(
+      {super.key,
+      required this.textColor,
+      required this.backgroundColor,
+      required this.text,
+      required this.onPressed});
   final Color textColor;
   final Color backgroundColor;
   final String text;
@@ -22,8 +27,9 @@ class ActionButton extends StatelessWidget {
           onPressed: onPressed,
           child: Text(
             text,
-            style:
-                TextStyle(color: textColor).merge(context.textTheme.titleMedium),
+            style: context.textTheme.labelMedium?.copyWith(
+              color: textColor,
+            ),
             textAlign: TextAlign.center,
           ),
         ),

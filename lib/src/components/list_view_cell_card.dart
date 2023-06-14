@@ -42,9 +42,9 @@ class ListViewCellCard extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               backgroundColor: context.colorScheme.primary,
-                              child: Icon(
+                              child: const Icon(
                                 Icons.computer,
-                                color: context.colorScheme.onBackground,
+                                color: Colors.white,
                                 size: 24,
                               ),
                             ),
@@ -56,34 +56,35 @@ class ListViewCellCard extends StatelessWidget {
                           children: [
                             Text(
                               task.name,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: context.textTheme.labelSmall,
                             ),
                             const Spacer(),
                             Wrap(
                               children: [
-                                TagView(tag: Tag.participant(
+                                TagView(
+                                    tag: Tag.participant(
                                   nameTag: task.participants.isEmpty
                                       ? 'Aucun participant'
                                       : task.participants[0].nameTag,
                                 )),
                                 if (task.participants.length > 1) ...[
                                   wSizedBox5,
-                                  TagView(tag: Tag.participant(
-                                  nameTag: '...',
-                                )),
+                                  TagView(
+                                      tag: Tag.participant(
+                                    nameTag: '...',
+                                  )),
                                 ],
                                 wSizedBox5,
-                                TagView(tag: Tag.label(
+                                TagView(
+                                    tag: Tag.label(
                                   nameTag: task.tags.isEmpty ? 'Aucun tag' : task.tags[0].nameTag,
                                 )),
                                 if (task.tags.length > 1) ...[
                                   wSizedBox5,
-                                  TagView(tag: Tag.label(
-                                  nameTag: '...',
-                                )),
+                                  TagView(
+                                      tag: Tag.label(
+                                    nameTag: '...',
+                                  )),
                                 ],
                               ],
                             ),

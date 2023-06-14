@@ -65,7 +65,7 @@ class _ListViewCellState extends State<ListViewCell> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        final result = await showModalDetailTask(context);
+        await showModalDetailTask(context);
       },
       child: ListViewCellCard(task: widget.task),
     );

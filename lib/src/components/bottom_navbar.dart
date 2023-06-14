@@ -28,10 +28,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     final aspects = [
-      BottomNavbarAspect.calendar,
+      BottomNavbarAspect.parameter,
       BottomNavbarAspect.home,
       BottomNavbarAspect.download,
-      BottomNavbarAspect.parameter,
     ];
     return ClipRRect(
       borderRadius: kBorderRadius,

@@ -68,41 +68,44 @@ class HomeSectionTodayline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          'Aujourd\'hui',
-          style: context.textTheme.titleMedium,
-        ),
-        TextButton(
-          style: ButtonStyle(
-            textStyle: MaterialStateProperty.all(
-              TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w400,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15, top: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            'Aujourd\'hui',
+            style: context.textTheme.titleMedium,
+          ),
+          /* TextButton(
+            style: ButtonStyle(
+              textStyle: MaterialStateProperty.all(
+                TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                  color: context.colorScheme.onSurface,
+                ),
+              ),
+              foregroundColor: MaterialStateProperty.all(
+                context.colorScheme.onSurface,
+              ),
+              overlayColor: MaterialStateProperty.all(
+                context.colorScheme.inverseSurface,
+              ),
+            ),
+            onPressed: () {
+              showModalAllTask(context);
+            },
+            child: Text(
+              'Voir tout',
+              style: TextStyle(
                 color: context.colorScheme.onSurface,
               ),
             ),
-            foregroundColor: MaterialStateProperty.all(
-              context.colorScheme.onSurface,
-            ),
-            overlayColor: MaterialStateProperty.all(
-              context.colorScheme.inverseSurface,
-            ),
-          ),
-          onPressed: () {
-            showModalAllTask(context);
-          },
-          child: Text(
-            'Voir tout',
-            style: TextStyle(
-              color: context.colorScheme.onSurface,
-            ),
-          ),
-        )
-      ],
+          ) */
+        ],
+      ),
     );
   }
 }

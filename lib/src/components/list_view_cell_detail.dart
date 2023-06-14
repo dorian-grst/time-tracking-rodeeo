@@ -41,20 +41,14 @@ class ListViewCellDetail extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Détails 🍃',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w900,
-                ),
+                style: context.textTheme.titleMedium?.merge(const TextStyle(fontSize: 24)),
               ),
               hSizedBox20,
-              const Text(
+              Text(
                 'Informations',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: context.textTheme.titleMedium,
               ),
               hSizedBox15,
               Column(
@@ -115,20 +109,14 @@ class ListViewCellDetail extends StatelessWidget {
                 ],
               ),
               hSizedBox20,
-              const Text(
+              Text(
                 'Description',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: context.textTheme.titleMedium,
               ),
               hSizedBox15,
               Text(
                 task.description,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: context.textTheme.bodySmall,
               ),
               hSizedBox20,
               Visibility(
@@ -136,12 +124,9 @@ class ListViewCellDetail extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Participant(s)',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: context.textTheme.titleMedium,
                     ),
                     hSizedBox15,
                     Wrap(
@@ -162,12 +147,9 @@ class ListViewCellDetail extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Tag(s)',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: context.textTheme.titleMedium,
                     ),
                     hSizedBox15,
                     Wrap(
@@ -183,12 +165,9 @@ class ListViewCellDetail extends StatelessWidget {
                   ],
                 ),
               ),
-              const Text(
+              Text(
                 'Graphique',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: context.textTheme.titleMedium,
               ),
               hSizedBox15,
               TimeGraph(
@@ -197,7 +176,7 @@ class ListViewCellDetail extends StatelessWidget {
               ),
               hSizedBox35,
               ActionButton(
-                textColor: context.colorScheme.onBackground,
+                textColor: Colors.white,
                 backgroundColor: context.colorScheme.primary,
                 text: 'Utiliser la tâche',
                 onPressed: () {
@@ -206,7 +185,7 @@ class ListViewCellDetail extends StatelessWidget {
               ),
               hSizedBox20,
               ActionButton(
-                textColor: context.colorScheme.onBackground,
+                textColor: Colors.white,
                 backgroundColor: context.colorScheme.secondary,
                 text: 'Modifier la tâche',
                 onPressed: () {
@@ -248,7 +227,7 @@ class ListViewCellDetail extends StatelessWidget {
               ),
               hSizedBox20,
               ActionButton(
-                textColor: context.colorScheme.onBackground,
+                textColor: Colors.white,
                 backgroundColor: context.colorScheme.tertiary,
                 text: 'Supprimer la tâche',
                 onPressed: () {

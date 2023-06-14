@@ -99,7 +99,7 @@ class ListViewCellDetailbox extends StatelessWidget {
                     child: Icon(
                       icon,
                       size: 24,
-                      color: context.colorScheme.onBackground,
+                      color: Colors.white,
                     ),
                   ),
                 ),

@@ -1,4 +1,5 @@
 import 'package:apprentissage/src/components/time_tracker_homepage.dart';
+import 'package:apprentissage/src/components/windhair.dart';
 import 'package:apprentissage/src/hive/boxes.dart';
 import 'package:apprentissage/src/hive/tag.dart';
 import 'package:apprentissage/src/hive/tag_type.dart';
@@ -21,11 +22,31 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _isFirstRun = true;
+
+  @override
+  void initState() {
+    super.initState();
+    // Attendre 4 secondes avant de passer à false
+    Future.delayed(const Duration(seconds: 4), () {
+      setState(() {
+        _isFirstRun = false;
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final rodeeoTheme = RodeeoTheme(Theme.of(context));
+
     return ChangeNotifierProvider<ThemeProvider>(
       create: (_) => ThemeProvider(),
       child: Consumer<ThemeProvider>(
@@ -33,8 +54,19 @@ class MyApp extends StatelessWidget {
           final isDark = context.watch<ThemeProvider>().isDarkMode;
           return MaterialApp(
             title: 'Tracker hours',
-            theme: isDark ? RodeeoTheme.darkTheme : RodeeoTheme.lightTheme,
-            home: const TimeTrackerHomePage(),
+            theme: rodeeoTheme.light,
+            darkTheme: rodeeoTheme.dark,
+            themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
+            home: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 500),
+              transitionBuilder: (child, animation) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+              child: _isFirstRun ? Windhair() : TimeTrackerHomePage(),
+            ),
           );
         },
       ),

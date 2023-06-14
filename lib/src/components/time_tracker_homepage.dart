@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:apprentissage/src/components/bottom_navbar.dart';
-import 'package:apprentissage/src/components/calendar_section.dart';
 import 'package:apprentissage/src/components/export_section.dart';
 import 'package:apprentissage/src/components/create_task_floattingbutton.dart';
 import 'package:apprentissage/src/components/home_section.dart';
@@ -51,24 +50,22 @@ class _TimeTrackerHomePageState extends State<TimeTrackerHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final tabIndexNotifier = ValueNotifier<int>(0);
+    final tabIndexNotifier = ValueNotifier<int>(1);
     final homeSection = HomeSection(
       onSelectTask: () {},
     );
-    
+
     return Scaffold(
       backgroundColor: context.colorScheme.background,
       body: ValueListenableBuilder<int>(
         valueListenable: tabIndexNotifier,
         builder: (context, selectedIndex, child) {
           if (selectedIndex == 0) {
-            return const CalendarSection();
+            return const ParameterSection();
           } else if (selectedIndex == 1) {
             return homeSection;
           } else if (selectedIndex == 2) {
             return const ExportSection();
-          } else if (selectedIndex == 3) {
-            return const ParameterSection();
           } else {
             return const SizedBox.shrink();
           }
@@ -79,7 +76,9 @@ class _TimeTrackerHomePageState extends State<TimeTrackerHomePage> {
           builder: (context, selectedIndex, child) {
             return BottomNavBar(
               selectedIndex: selectedIndex,
-              onItemTapped: (index) { tabIndexNotifier.value = index; },
+              onItemTapped: (index) {
+                tabIndexNotifier.value = index;
+              },
             );
           }),
       floatingActionButton: CreateTaskFloatingButton(

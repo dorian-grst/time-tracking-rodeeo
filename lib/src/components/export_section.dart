@@ -1,11 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:apprentissage/src/extensions/context_extension.dart';
 import 'package:apprentissage/src/hive/boxes.dart';
-import 'package:apprentissage/src/hive/task.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter_mailer/flutter_mailer.dart';
 
 const hSizedBox20 = SizedBox(height: 20);
 
@@ -18,54 +19,73 @@ class ExportSection extends StatefulWidget {
 
 class _ExportSectionState extends State<ExportSection> {
   bool _isExporting = false;
+  Timer? _setStateTimer;
+
+  @override
+  void dispose() {
+    _setStateTimer?.cancel();
+    super.dispose();
+  }
 
   Future<void> startExport() async {
-    setState(() {
-      _isExporting = true;
-    });
+    final Directory tempDir = await getTemporaryDirectory();
 
     List<Map<String, dynamic>> taskJsonList = [];
-    for (var i = 0; i < taskBox.length; i++) {
-      Task task = taskBox.getAt(i) as Task;
+    for (final task in taskBox.values) {
       taskJsonList.add(task.toMap());
     }
+    String filePath = '${tempDir.path}/tasks.json';
     String jsonStr = jsonEncode(taskJsonList);
-    File('tasks.json')
-        .writeAsString(jsonStr)
-        .then((_) => debugPrint('Fichier JSON créé avec succès.'))
-        .catchError((error) => debugPrint('Erreur lors de la création du fichier JSON : $error'));
-
-    String? encodeQueryParameters(Map<String, String> params) {
-      return params.entries
-          .map((MapEntry<String, String> e) =>
-              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
-          .join('&');
-    }
+    var file = File(filePath);
+    await file.writeAsString(jsonStr);
 
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('dd/MM/yyyy').format(now);
 
-    final Uri emailUri = Uri(
-      scheme: 'mailto',
-      path: 'dorian.grasset.contact@gmail.com',
-      query: encodeQueryParameters(<String, String>{
-        'subject': 'Export de mes tâches',
-        'body': 'Voici le fichier JSON contenant mes tâches à la date du $formattedDate.',
-        'attachments': 'tasks.json',
-      }),
+    final MailOptions mailOptions = MailOptions(
+      subject: 'Export de mes tâches',
+      body: 'Voici le fichier JSON contenant mes tâches à la date du $formattedDate.',
+      recipients: [],
+      isHTML: false,
+      attachments: [filePath],
     );
 
-    if (await canLaunchUrl(emailUri)) {
-      await launchUrl(emailUri);
-      // Attendre 2 secondes puis réinitialiser l'état de l'export
-      Future.delayed(const Duration(seconds: 2), () {
+    try {
+      await FlutterMailer.send(mailOptions);
+      if (mounted) {
         setState(() {
           _isExporting = false;
         });
-      });
-    } else {
-      throw Exception('Could not launch $emailUri');
+      }
+    } catch (e) {
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Erreur d\'envoi'),
+              content: const Text('Une erreur s\'est produite lors de l\'envoi de l\'e-mail.'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
     }
+
+    _setStateTimer = Timer(const Duration(seconds: 2), () {
+      if (mounted) {
+        setState(() {
+          _isExporting = false;
+        });
+      }
+    });
   }
 
   @override

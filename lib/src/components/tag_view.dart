@@ -10,27 +10,15 @@ class TagView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color getTagTextColor(TagType type, BuildContext context) {
-      switch (type) {
-        case TagType.participant:
-          return context.colorScheme.errorContainer; // Couleur pour le type "participant"
-        case TagType.label:
-          return context.colorScheme.onBackground; // Couleur pour le type "label"
-        default:
-          return context
-              .colorScheme.onBackground; // Couleur par défaut si le type n'est pas reconnu
-      }
-    }
-
     Color getTagBackgroundColor(TagType type, BuildContext context) {
       switch (type) {
         case TagType.participant:
-          return context.colorScheme.surface; // Couleur pour le type "participant"
+          return context.colorScheme.errorContainer;
         case TagType.label:
-          return context.colorScheme.secondary; // Couleur pour le type "label"
+          return context.colorScheme.secondary;
         default:
           return context
-              .colorScheme.errorContainer; // Couleur par défaut si le type n'est pas reconnu
+              .colorScheme.errorContainer;
       }
     }
 
@@ -42,10 +30,10 @@ class TagView extends StatelessWidget {
       ),
       child: Text(
         tag.nameTag,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w500,
-          color: getTagTextColor(tag.type, context),
+          color: Colors.white,
         ),
       ),
     );

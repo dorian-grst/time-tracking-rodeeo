@@ -55,7 +55,6 @@ class ParameterSection extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       themeProvider.toggleTheme();
-                      
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(context.colorScheme.onSurface),
