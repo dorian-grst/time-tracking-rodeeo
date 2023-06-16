@@ -1,4 +1,3 @@
-import 'package:apprentissage/src/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -48,7 +47,7 @@ class _CurrentTaskTimerState extends State<CurrentTaskTimer> {
     final seconds = twoDigits(duration.inSeconds.remainder(60));
     return Text(
       '$hours:$minutes:$seconds',
-      style: context.textTheme.displayLarge,
+      style: const TextStyle(color: Colors.black, fontSize: 32),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:apprentissage/src/components/current_task_rightside.dart';
 import 'package:apprentissage/src/components/current_task_leftside.dart';
+import 'package:apprentissage/src/hive/boxes.dart';
 import 'package:flutter/material.dart';
 
 class CurrentTaskContainer extends StatelessWidget {
@@ -9,13 +10,13 @@ class CurrentTaskContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isPlayingNotifier = ValueNotifier<bool>(false);
-
+    final task = taskBox.get(currentTaskIndex);
+    final taskTime = task.sessionDuration;
+    final isPlayingNotifier = ValueNotifier<bool>(taskTime != null);
     return Row(
       children: [
         CurrentTaskLeftside(
           taskIndex: currentTaskIndex,
-          isPlayingNotifier: isPlayingNotifier,
         ),
         const Spacer(),
         CurrentTaskRightside(
