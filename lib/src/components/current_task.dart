@@ -13,32 +13,34 @@ class CurrentTaskView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late final currentTask = currentTaskIndex != null ? taskBox.get(currentTaskIndex) : null;
+    late final currentTask =
+        currentTaskIndex != null ? taskBox.get(currentTaskIndex) : null;
     return Visibility(
       visible: currentTaskIndex != null,
       child: SizedBox(
-          height: 115,
-          width: double.infinity,
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+        height: 115,
+        width: double.infinity,
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          color: context.colorScheme.onBackground,
+          elevation: 0,
+          child: Padding(
+            padding: const EdgeInsets.only(
+              right: 17,
+              left: 17,
+              top: 15,
+              bottom: 15,
             ),
-            color: context.colorScheme.onBackground,
-            elevation: 0,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                right: 17,
-                left: 17,
-                top: 15,
-                bottom: 15,
-              ),
-              child: currentTask != null
-                  ? CurrentTaskContainer(
-                      currentTaskIndex: currentTaskIndex,
-                    )
-                  : const SizedBox(),
-            ),
-          )),
+            child: currentTask != null
+                ? CurrentTaskContainer(
+                    currentTaskIndex: currentTaskIndex,
+                  )
+                : const SizedBox(),
+          ),
+        ),
+      ),
     );
   }
 }

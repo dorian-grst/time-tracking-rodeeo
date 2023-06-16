@@ -13,13 +13,7 @@ class CurrentTaskRightside extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final task = taskBox.get(taskIndex);
-    void togglePlaying() {
-      if (!(task?.isPlaying ?? false)) {
-        task?.start();
-      } else {
-        task?.stop();
-      }
-    }
+    void togglePlaying() {}
 
     if (task == null) return const SizedBox();
     return SizedBox(

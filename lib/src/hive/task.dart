@@ -172,6 +172,7 @@ class Task extends HiveObject implements TimableObject {
   }
 
   bool get isStarted => activityStartedAt != 0;
+  
   int get nowSinceEpoch => DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
   /// Temps total passé sur la tâche au moment où on l'a arrêté

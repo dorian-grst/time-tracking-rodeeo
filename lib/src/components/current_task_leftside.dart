@@ -1,5 +1,5 @@
 import 'package:apprentissage/src/components/current_task.dart';
-import 'package:apprentissage/src/components/current_task_timer.dart';
+import 'package:apprentissage/src/components/current_task_timer_view.dart';
 import 'package:apprentissage/src/hive/boxes.dart';
 import 'package:apprentissage/src/utils/extensions/build_context_ext.dart';
 import 'package:flutter/material.dart';
@@ -8,11 +8,9 @@ class CurrentTaskLeftside extends StatelessWidget {
   const CurrentTaskLeftside({
     super.key,
     required this.taskIndex,
-    required this.isPlayingNotifier,
   });
 
   final dynamic taskIndex;
-  final ValueNotifier<bool> isPlayingNotifier;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +24,11 @@ class CurrentTaskLeftside extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CurrentTaskTimer(
-              timableObject: task,
+            CurrentTaskTimerView(
+              formerTaskDuration: const Duration(minutes: 18),
+              currentStartTime: DateTime.now().add(const Duration(minutes: -5)),
+              // currentDuration: task.currentDuration,
+              // currentStartTime: task.sessionDuration,
             ),
             hSizedBox15,
             Row(
