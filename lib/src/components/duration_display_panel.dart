@@ -4,11 +4,12 @@ import 'package:apprentissage/src/utils/extensions/build_context_ext.dart';
 import 'package:flutter/material.dart';
 
 class DurationDisplayPanel extends StatelessWidget {
-  const DurationDisplayPanel(
-      {super.key,
-      required this.name,
-      required this.initialDuration,
-      required this.currentStartTime});
+  const DurationDisplayPanel({
+    super.key,
+    required this.name,
+    required this.initialDuration,
+    required this.currentStartTime,
+  });
   final DateTime? currentStartTime;
   final Duration initialDuration;
   final String name;
@@ -23,9 +24,9 @@ class DurationDisplayPanel extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CurrentTaskTimerView(
-              key: ValueKey(initialDuration),
-              formerTaskDuration: initialDuration,
-              currentStartTime: currentStartTime,
+              key: ValueKey(DateTime.now().millisecondsSinceEpoch),
+              initialDuration: initialDuration,
+              startTime: currentStartTime,
             ),
             Row(
               children: [
