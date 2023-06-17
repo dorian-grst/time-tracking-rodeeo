@@ -151,53 +151,34 @@ class Task extends HiveObject {
     await newTask.save();
   }
 
-  /* Future<void> start() async {
-    if (isStarted) {
-      return;
-    }
-
-    await saveWith(
-      activityStartedAt: nowSinceEpoch,
-    );
-  }
-
-  Future<void> stop() async {
-    if (isStarted == false) {
-      return;
-    }
-    final duration = durationSecond + (nowSinceEpoch - activityStartedAt);
-    await saveWith(
-      durationSecond: duration,
-      activityStartedAt: 0,
-    );
-  } */
-
   bool get isStarted => activityStartedAt != 0;
 
   int get nowSinceEpoch => DateTime.now().millisecondsSinceEpoch;
 
-  /// Temps total passé sur la tâche au moment où on l'a arrêté
-  Duration get totalTaskDuration => Duration(seconds: durationSecond);
+  Duration get storedDuration => Duration(seconds: durationSecond);
 
-  /// Temps passé sur la tâche depuis le début de la session
-  Duration get sessionDuration => activityStartedAt == 0
-      ? Duration.zero
-      : Duration(milliseconds: nowSinceEpoch - activityStartedAt);
+  void addDuration(Duration duration) {
+    durationSecond = duration.inSeconds;
+  }
 
-  /// Temps passé sur la tâche
-  @override
-  Duration get currentDuration => totalTaskDuration + sessionDuration;
+  DateTime? get sessionStartDate =>
+      isStarted ? DateTime.fromMillisecondsSinceEpoch(activityStartedAt) : null;
 
-  @override
-  bool get isPlaying => isStarted;
+  void startSession() {
+    if (isStarted) return;
+    activityStartedAt = DateTime.now().millisecondsSinceEpoch;
+  }
 
-  DateTime? get sessionStartTime => sessionDuration == Duration.zero
-      ? null
-      : DateTime.fromMillisecondsSinceEpoch(sessionDuration.inMilliseconds);
+  void stopSession() {
+    final start = sessionStartDate;
+    if (start != null) {
+      activityStartedAt = 0;
+      final now = DateTime.now();
+      final sessionDuration = now.difference(start);
+      durationSecond += sessionDuration.inSeconds;
+    }
+  }
 
-  /* @override
-  void Function(bool newStatus) get setIsPlaying => (status) => status ? start : stop;
-   */
   Map<String, dynamic> toMap() {
     return {
       'name': name,
@@ -209,7 +190,8 @@ class Task extends HiveObject {
       'globalAdvancement': globalAdvancement,
       'description': description,
       'state': state.toString(), // Convertir TaskState en chaîne de caractères
-      'participants': participants.map((participant) => participant.toMap()).toList(),
+      'participants':
+          participants.map((participant) => participant.toMap()).toList(),
       'tags': tags.map((tag) => tag.toMap()).toList(),
       'durationSecond': durationSecond,
       'activityStartedAt': activityStartedAt,
