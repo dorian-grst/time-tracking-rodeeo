@@ -15,54 +15,24 @@ class CurrentTaskPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final initialIsPlaying = task.sessionDuration != Duration.zero;
-    bool firstUse = true;
-
-    bool actualPlaying(bool isPlaying) {
-      if (firstUse) {
-        firstUse = false;
-        return initialIsPlaying;
-      }
-      return isPlaying;
-    }
+    final initialIsPlaying = task.isStarted;
 
     final isPlayingNotifier = ValueNotifier<bool>(initialIsPlaying);
     return Row(
       children: [
         ValueListenableBuilder(
             valueListenable: isPlayingNotifier,
-            builder: (context, newIsPlaying, child) {
-              final actualIsPlaying = actualPlaying(newIsPlaying);
-              late final int initialStartedAt;
-              late final Duration initialDuration;
-              final formerTaskDuration = Duration(seconds: task.durationSecond);
-              /* final isDifferent = newIsPlaying != initialIsPlaying;
-              print('isDifferent: $isDifferent'); */
-              if (actualIsPlaying) {
-                initialStartedAt = DateTime.now().millisecondsSinceEpoch;
-                initialDuration = formerTaskDuration;
+            builder: (context, startTask, child) {
+              if (startTask) {
+                task.startSession();
               } else {
-                //STOP LA TACHE
-                final nowInMsSinceEpoch = DateTime.now().millisecondsSinceEpoch;
-                final startedAt = task.activityStartedAt;
-                final duration = nowInMsSinceEpoch - startedAt;
-                initialDuration = formerTaskDuration + Duration(seconds: duration);
-                task.durationSecond = initialDuration.inSeconds;
-                initialStartedAt = 0;
+                task.stopSession();
               }
-              //}
-              task.activityStartedAt = initialStartedAt;
               task.save();
-              final startTime = initialStartedAt == 0
-                  ? null
-                  : DateTime.fromMillisecondsSinceEpoch(initialStartedAt);
-
-              //final sessionStartTime = newIsPlaying ?
               return DurationDisplayPanel(
                 name: task.name,
-                initialDuration: initialDuration,
-                //initialDuration: Duration(minutes: 4),
-                currentStartTime: startTime,
+                initialDuration: task.storedDuration,
+                currentStartTime: task.sessionStartDate,
               );
             }),
         const Spacer(),
