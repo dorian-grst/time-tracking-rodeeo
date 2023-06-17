@@ -1,8 +1,8 @@
 import 'package:apprentissage/src/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 
-class CurrentTaskButton extends StatelessWidget {
-  const CurrentTaskButton({
+class StartStopButton extends StatelessWidget {
+  const StartStopButton({
     super.key,
     required this.isPlaying,
     required this.onTap,

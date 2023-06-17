@@ -25,6 +25,8 @@ class _CurrentTaskTimerViewState extends State<CurrentTaskTimerView> {
     _current = widget.currentStartTime;
     if (_current != null) {
       _timer = Timer.periodic(const Duration(seconds: 1), increment);
+    } else {
+      _timer = Timer(const Duration(microseconds: 1), () {});
     }
   }
 
@@ -62,8 +64,7 @@ class TimerDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     final current = currentStartTime;
 
-    final increment =
-        current != null ? DateTime.now().difference(current) : Duration.zero;
+    final increment = current != null ? DateTime.now().difference(current) : Duration.zero;
 
     final actualDuration = formerTaskDuration + increment;
 

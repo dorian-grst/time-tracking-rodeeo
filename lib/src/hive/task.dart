@@ -1,4 +1,3 @@
-import 'package:apprentissage/src/components/current_task_timer.dart';
 import 'package:apprentissage/src/hive/boxes.dart';
 import 'package:apprentissage/src/hive/tag.dart';
 import 'package:apprentissage/src/hive/task_state.dart';
@@ -6,8 +5,10 @@ import 'package:hive/hive.dart';
 
 part 'task.g.dart';
 
+//flutter packages pub run build_runner build --delete-conflicting-outputs
+
 @HiveType(typeId: 1)
-class Task extends HiveObject implements TimableObject {
+class Task extends HiveObject {
   @HiveField(0)
   final String name;
 
@@ -42,10 +43,10 @@ class Task extends HiveObject implements TimableObject {
   final List<Tag> tags;
 
   @HiveField(11)
-  final int durationSecond;
+  int durationSecond;
 
   @HiveField(12)
-  final int activityStartedAt;
+  int activityStartedAt;
 
   Task({
     required this.name,
@@ -150,7 +151,7 @@ class Task extends HiveObject implements TimableObject {
     await newTask.save();
   }
 
-  Future<void> start() async {
+  /* Future<void> start() async {
     if (isStarted) {
       return;
     }
@@ -169,18 +170,19 @@ class Task extends HiveObject implements TimableObject {
       durationSecond: duration,
       activityStartedAt: 0,
     );
-  }
+  } */
 
   bool get isStarted => activityStartedAt != 0;
-  
-  int get nowSinceEpoch => DateTime.now().millisecondsSinceEpoch ~/ 1000;
+
+  int get nowSinceEpoch => DateTime.now().millisecondsSinceEpoch;
 
   /// Temps total passé sur la tâche au moment où on l'a arrêté
   Duration get totalTaskDuration => Duration(seconds: durationSecond);
 
   /// Temps passé sur la tâche depuis le début de la session
-  Duration get sessionDuration =>
-      activityStartedAt == 0 ? Duration.zero : Duration(seconds: nowSinceEpoch - activityStartedAt);
+  Duration get sessionDuration => activityStartedAt == 0
+      ? Duration.zero
+      : Duration(milliseconds: nowSinceEpoch - activityStartedAt);
 
   /// Temps passé sur la tâche
   @override
@@ -189,10 +191,14 @@ class Task extends HiveObject implements TimableObject {
   @override
   bool get isPlaying => isStarted;
 
-  @override
-  void Function(bool newStatus) get setIsPlaying => (status) => status ? start : stop;
+  DateTime? get sessionStartTime => sessionDuration == Duration.zero
+      ? null
+      : DateTime.fromMillisecondsSinceEpoch(sessionDuration.inMilliseconds);
 
-  Map<String, dynamic> toMap () {
+  /* @override
+  void Function(bool newStatus) get setIsPlaying => (status) => status ? start : stop;
+   */
+  Map<String, dynamic> toMap() {
     return {
       'name': name,
       'timePrevision': timePrevision,
@@ -203,8 +209,8 @@ class Task extends HiveObject implements TimableObject {
       'globalAdvancement': globalAdvancement,
       'description': description,
       'state': state.toString(), // Convertir TaskState en chaîne de caractères
-      'participants': participants.map((participant) => participant.toMap ()).toList(),
-      'tags': tags.map((tag) => tag.toMap ()).toList(),
+      'participants': participants.map((participant) => participant.toMap()).toList(),
+      'tags': tags.map((tag) => tag.toMap()).toList(),
       'durationSecond': durationSecond,
       'activityStartedAt': activityStartedAt,
     };

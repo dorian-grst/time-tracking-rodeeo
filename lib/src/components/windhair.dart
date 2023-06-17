@@ -1,6 +1,4 @@
 import 'package:apprentissage/src/utils/extensions/build_context_ext.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 

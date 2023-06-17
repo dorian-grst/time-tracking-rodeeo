@@ -24,9 +24,9 @@ class HomeSection extends StatelessWidget {
     final Box<Task> taskBox =
         Hive.box<Task>('taskBox'); // Remplacez 'tasks' par le nom de votre boîte de tâches
 
-    Task? currentTask(dynamic currentIndex) {
+    /* Task? currentTask(dynamic currentIndex) {
       return currentIndex != null ? taskBox.get(currentIndex) : null;
-    }
+    } */
 
     return Padding(
       padding: const EdgeInsets.only(top: 75, left: 15, right: 15),

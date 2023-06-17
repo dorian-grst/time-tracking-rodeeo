@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
                   child: child,
                 );
               },
-              child: _isFirstRun ? Windhair() : TimeTrackerHomePage(),
+              child: _isFirstRun ? const Windhair() : const TimeTrackerHomePage(),
             ),
           );
         },

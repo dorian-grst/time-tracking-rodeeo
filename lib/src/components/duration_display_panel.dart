@@ -1,22 +1,20 @@
 import 'package:apprentissage/src/components/current_task.dart';
 import 'package:apprentissage/src/components/current_task_timer_view.dart';
-import 'package:apprentissage/src/hive/boxes.dart';
 import 'package:apprentissage/src/utils/extensions/build_context_ext.dart';
 import 'package:flutter/material.dart';
 
-class CurrentTaskLeftside extends StatelessWidget {
-  const CurrentTaskLeftside({
-    super.key,
-    required this.taskIndex,
-  });
-
-  final dynamic taskIndex;
+class DurationDisplayPanel extends StatelessWidget {
+  const DurationDisplayPanel(
+      {super.key,
+      required this.name,
+      required this.initialDuration,
+      required this.currentStartTime});
+  final DateTime? currentStartTime;
+  final Duration initialDuration;
+  final String name;
 
   @override
   Widget build(BuildContext context) {
-    if (taskIndex == null) return const SizedBox();
-    if (taskBox.containsKey(taskIndex) == false) return const SizedBox();
-    final task = taskBox.get(taskIndex);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -25,12 +23,10 @@ class CurrentTaskLeftside extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CurrentTaskTimerView(
-              formerTaskDuration: const Duration(minutes: 18),
-              currentStartTime: DateTime.now().add(const Duration(minutes: -5)),
-              // currentDuration: task.currentDuration,
-              // currentStartTime: task.sessionDuration,
+              key: ValueKey(initialDuration),
+              formerTaskDuration: initialDuration,
+              currentStartTime: currentStartTime,
             ),
-            hSizedBox15,
             Row(
               children: [
                 SizedBox(
@@ -49,7 +45,7 @@ class CurrentTaskLeftside extends StatelessWidget {
                 ),
                 wSizedBox10,
                 Text(
-                  taskBox.get(taskIndex)?.name,
+                  name,
                   style: context.textTheme.bodySmall,
                 ),
               ],
