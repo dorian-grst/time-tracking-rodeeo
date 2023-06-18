@@ -13,7 +13,13 @@ const hSizedBox20 = SizedBox(height: 20);
 const hSizedBox30 = SizedBox(height: 30);
 const hSizedBox35 = SizedBox(height: 35);
 
-class ListViewCell extends StatefulWidget {
+enum TaskAction {
+  select,
+  edit,
+  delete,
+}
+
+class ListViewCell extends StatelessWidget {
   const ListViewCell({
     super.key,
     required this.task,
@@ -22,22 +28,9 @@ class ListViewCell extends StatefulWidget {
     required this.onSelectTask,
   });
   final Task task;
-  final void Function() onDeleteTask;
+  final VoidCallback onDeleteTask;
   final void Function(Task) onEditTask;
-  final void Function() onSelectTask;
-
-  @override
-  State<ListViewCell> createState() => _ListViewCellState();
-}
-
-enum TaskAction {
-  select,
-  edit,
-  delete,
-}
-
-class _ListViewCellState extends State<ListViewCell> {
-  final taskNameController = TextEditingController();
+  final VoidCallback onSelectTask;
 
   Future<TaskAction?> showModalDetailTask(BuildContext context) {
     return showModalBottomSheet<TaskAction>(
@@ -52,10 +45,10 @@ class _ListViewCellState extends State<ListViewCell> {
       isScrollControlled: true,
       builder: (context) {
         return ListViewCellDetail(
-          task: widget.task,
-          deleteTask: () => widget.onDeleteTask(),
-          editTask: () => widget.onEditTask(widget.task),
-          selectTask: () => widget.onSelectTask(),
+          task: task,
+          deleteTask: () => onDeleteTask(),
+          editTask: () => onEditTask(task),
+          selectTask: () => onSelectTask(),
         );
       },
     );
@@ -67,7 +60,7 @@ class _ListViewCellState extends State<ListViewCell> {
       onTap: () async {
         await showModalDetailTask(context);
       },
-      child: ListViewCellCard(task: widget.task),
+      child: ListViewCellCard(task: task),
     );
   }
 }

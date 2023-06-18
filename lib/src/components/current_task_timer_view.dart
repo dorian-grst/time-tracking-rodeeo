@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 class CurrentTaskTimerView extends StatefulWidget {
   const CurrentTaskTimerView({
     super.key,
-    required this.formerTaskDuration,
-    required this.currentStartTime,
+    required this.initialDuration,
+    required this.startTime,
   });
-  final Duration formerTaskDuration;
-  final DateTime? currentStartTime;
+  final Duration initialDuration;
+  final DateTime? startTime;
 
   @override
   State<CurrentTaskTimerView> createState() => _CurrentTaskTimerViewState();
@@ -22,7 +22,7 @@ class _CurrentTaskTimerViewState extends State<CurrentTaskTimerView> {
   @override
   void initState() {
     super.initState();
-    _current = widget.currentStartTime;
+    _current = widget.startTime;
     if (_current != null) {
       _timer = Timer.periodic(const Duration(seconds: 1), increment);
     } else {
@@ -36,15 +36,15 @@ class _CurrentTaskTimerViewState extends State<CurrentTaskTimerView> {
 
   @override
   void dispose() {
-    if (_timer?.isActive ?? false) _timer?.cancel();
     super.dispose();
+    if (_timer?.isActive ?? false) _timer?.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
     return TimerDisplay(
       currentStartTime: _current,
-      formerTaskDuration: widget.formerTaskDuration,
+      formerTaskDuration: widget.initialDuration,
     );
   }
 }
@@ -64,7 +64,8 @@ class TimerDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     final current = currentStartTime;
 
-    final increment = current != null ? DateTime.now().difference(current) : Duration.zero;
+    final increment =
+        current != null ? DateTime.now().difference(current) : Duration.zero;
 
     final actualDuration = formerTaskDuration + increment;
 

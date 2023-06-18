@@ -35,7 +35,8 @@ class _TaskListViewState extends State<TaskListView> {
   Widget build(BuildContext context) {
     final reversedTaskList = taskBox.values.toList().reversed.toList();
     final currentTaskIndex = widget.currentTaskIndexObserver.value;
-    final currentTask = currentTaskIndex != null ? taskBox.get(currentTaskIndex) : null;
+    final currentTask =
+        currentTaskIndex != null ? taskBox.get(currentTaskIndex) : null;
     return ListView.builder(
       padding: EdgeInsets.zero,
       itemCount: taskBox.length,
@@ -50,7 +51,10 @@ class _TaskListViewState extends State<TaskListView> {
             onDeleteTask(task);
           },
           onEditTask: (newTask) => onTaskEdited(task, newTask),
-          onSelectTask: () => widget.currentTaskIndexObserver.value = task.key,
+          onSelectTask: () {
+            widget.currentTaskIndexObserver.value = task.key;
+            Navigator.of(context).pop();
+          },
         );
       },
     );
