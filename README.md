@@ -1,4 +1,4 @@
-# apprentissage
+# Time tracking app
 
 A new Flutter project.
 
